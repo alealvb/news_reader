@@ -1,30 +1,36 @@
 require_relative 'etc'
+require_relative 'source'
+require_relative 'item'
 
-module Mashable
-  DIR = 'http://mashable.com/stories'
+class Mashable < Source
 
-  def self.get_items
+  def initialize
+    super
+    @dir = 'http://mashable.com/stories'
+  end
+
+  def get_items
     items = []
-    Etc.parse_json(DIR)['new'].each { |item| items << item }
-    Etc.parse_json(DIR)['rising'].each { |item| items << item }
-    Etc.parse_json(DIR)['hot'].each { |item| items << item }
+    json = Etc.parse_json(@dir)
+    json['new'].each { |item| items << item }
+    json['rising'].each { |item| items << item }
+    json['hot'].each { |item| items << item }
     items
   end
 
-  def self.create(data)
+  def create_items
     item = {}
-    content = {}
-    item[:title] = data['title']
-    item[:user] = 'mashable'
-    item[:itemid] = data['_id']
-    content[:category] = data['channel']
-    content[:link] = DIR + data['link']
-    time = data['post_date'].split('T')[1].split('+')[0]
-    content[:time] = time
-    date = Date.parse(data['post_date'])
-    content[:date] = date.strftime("%d-%m-%Y")
-    content[:author] = data['author']
-    item[:content] = content
-    item
+    get_items.each do |data|
+      item[:title] = data['title']
+      item[:itemid] = data['_id']
+      item[:link] = data['link']
+      time = data['post_date'].split('T')[1].split('+')[0]
+      item[:time] = time
+      date = Date.parse(data['post_date'])
+      item[:date] = date.strftime("%d-%m-%Y")
+      item[:author] = data['author']
+      @items.push(Item.new(item))
+    end
+    @items
   end
 end
