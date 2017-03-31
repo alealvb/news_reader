@@ -1,26 +1,16 @@
 class Item
-  attr_accessor :title, :user, :content, :itemid
-  # uno: {title: "title", user: 'not jon doe', content: {link:'google.xD', date: 'date',...}}
-  @@posts = {}
+  attr_accessor :title, :link, :date, :source, :time, :author
 
   def initialize(attributes)
     @title = attributes[:title]
-    @content = attributes[:content]
-    @user = attributes[:user]
-    @itemid = attributes[:itemid]
+    @link = attributes[:link]
+    @date = attributes[:date]
+    @time = attributes[:time]
+    @source = attributes[:source]
+    @author = attributes[:author]
   end
 
-  def self.all
-    @@posts
-  end
-
-  def self.create(attributes)
-    itemid = attributes[:itemid]
-    post = Item.new(attributes)
-    @@posts[itemid] = post
-  end
-
-  def self.show(id)
+  def self.get(id)
     @@posts[id]
   end
 end

@@ -1,8 +1,23 @@
+require_relative 'etc'
+
 class Source
-  def initialize(dir, _base, item_loc)
+  attr_accessor :items, :dir, :name
+
+  # @@data_loc = {
+  #   data: ['data', 'feed'],
+  #   title: ['content', 'title'],
+  #   author: ['content', 'author'],
+  #   link: ['content', 'url']
+  # }
+
+  # def data_loc
+  #   @@data_loc
+  # end
+
+  def initialize
     @items = []
-    @dir = dir
-    @base = _base #lugar donde esta el array de noticias en el json
-    @item_loc #item_loc
+    #@dir = attributes[:dir]
+    # @name = attributes[:name]
+    #@data_loc = attributes[:dir]
   end
 end
